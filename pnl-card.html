@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ANSEM PnL CARD</title>
+<link rel="stylesheet" href="css/global.css">
+<link rel="stylesheet" href="css/pnl.css">
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo-tag">// SOLANA MEMECOIN FLEX GENERATOR //</div>
+    <div class="logo">ANSEM PnL</div>
+    <div class="logo-sub">Generate · Flex · Go Viral</div>
+  </div>
+
+  <!-- INPUT PANEL -->
+  <div class="section-label">// enter your stats //</div>
+  <div class="connect-panel">
+
+    <div class="wallet-row">
+      <input class="wallet-input" id="wallet-addr" placeholder="Paste your wallet address (optional, for display only)..." maxlength="44" />
+      <button class="connect-btn" onclick="autoFill()">AUTO-FILL</button>
+    </div>
+
+    <div class="divider">OR ENTER MANUALLY</div>
+
+    <div class="manual-grid">
+      <div class="input-group">
+        <div class="input-label">Tokens Held</div>
+        <input class="num-input" id="tokens" type="number" placeholder="e.g. 1,000,000" min="0" />
+      </div>
+      <div class="input-group">
+        <div class="input-label">Avg Buy Price (SOL)</div>
+        <input class="num-input" id="buy-price" type="number" placeholder="e.g. 0.0000012" step="any" min="0" />
+      </div>
+      <div class="input-group">
+        <div class="input-label">Current Price (SOL)</div>
+        <input class="num-input" id="curr-price" type="number" placeholder="e.g. 0.0000048" step="any" min="0" />
+      </div>
+      <div class="input-group">
+        <div class="input-label">SOL Price (USD)</div>
+        <input class="num-input" id="sol-price" type="number" placeholder="e.g. 145" min="0" value="145" />
+      </div>
+    </div>
+
+    <div class="input-group" style="margin-bottom:16px;">
+      <div class="input-label">Your Degen Nickname (optional)</div>
+      <input class="full-input" id="nickname" type="text" placeholder="e.g. sol_maxi_9000, ansem_believer..." maxlength="24" />
+    </div>
+
+    <button class="gen-btn" onclick="generateCard()">⚡ GENERATE MY PnL CARD</button>
+  </div>
+
+  <!-- LOADING -->
+  <div class="loading-spinner" id="loading">🔮 The Oracle is calculating your fate...</div>
+
+  <!-- CARD OUTPUT -->
+  <div class="card-area">
+    <div class="pnl-card" id="pnl-card">
+      <div id="card-inner">
+        <div class="card-header">
+          <div class="card-token-info">
+            <div class="card-token-name">$ANSEM</div>
+            <div class="card-token-ca">9cRCn9rGT8V2imeM2...TGpump · Solana</div>
+          </div>
+          <div class="card-badge" id="card-badge">GIGACHAD</div>
+        </div>
+
+        <div class="card-pnl">
+          <div class="pnl-label">UNREALIZED PnL</div>
+          <div class="pnl-value" id="pnl-value">+∞%</div>
+          <div class="pnl-usd" id="pnl-usd">+$0.00</div>
+        </div>
+
+        <div class="card-stats">
+          <div class="stat">
+            <div class="stat-label">ENTRY</div>
+            <div class="stat-val" id="stat-entry">—</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">NOW</div>
+            <div class="stat-val" id="stat-now">—</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">TOKENS</div>
+            <div class="stat-val" id="stat-tokens">—</div>
+          </div>
+        </div>
+
+        <div class="card-tag-line" id="card-tagline">
+          "Still early. Still holding. Still gm." 🔮
+        </div>
+
+        <div class="card-footer">
+          <div class="card-wallet-addr" id="card-wallet">anon wallet · ansem oracle</div>
+          <div class="card-logo-small">ANSEM ORACLE</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-row" id="action-row">
+      <button class="action-btn btn-copy" onclick="copyCard()">📋 COPY TEXT</button>
+      <button class="action-btn btn-tweet" onclick="tweetCard()">🐦 TWEET THIS</button>
+      <button class="action-btn btn-tg" onclick="tgShare()">✈️ SHARE TO TG</button>
+    </div>
+  </div>
+
+  <!-- LEADERBOARD -->
+  <div class="section-label">// community leaderboard //</div>
+  <div class="lb-panel">
+    <div id="leaderboard-list"></div>
+  </div>
+
+
+
+  <!-- DISCLAIMER -->
+  <div class="disclaimer">
+    <span>⚠️ NOT FINANCIAL ADVICE.</span> PnL is calculated from your inputs only. No wallet data is stored or transmitted.<br>
+    This tool is for entertainment only. DYOR. Memecoins carry extreme risk.
+  </div>
+</div>
+
+<div id="toast">Copied to clipboard ✓</div>
+
+<script src="js/pnl.js"></script>
+</body>
+</html>

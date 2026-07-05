@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ANSEM ORACLE</title>
+<link rel="stylesheet" href="css/global.css">
+<link rel="stylesheet" href="css/oracle.css">
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo-tag">// SOLANA MEMECOIN INTELLIGENCE //</div>
+    <div class="logo">ANSEM ORACLE</div>
+    <div class="logo-sub">The all-knowing degen advisor</div>
+    <div class="token-badge">CA: 9cRCn9rGT8V2imeM2BaKs13yhMEais3ruM3rPvTGpump</div>
+  </div>
+
+  <!-- LIVE STATS -->
+  <div class="live-stats-bar" id="live-stats" style="display: none;">
+    <div class="stat-item">
+      <div class="stat-label">PRICE</div>
+      <div class="stat-value" id="stat-price">--</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-label">MCAP</div>
+      <div class="stat-value" id="stat-mcap">--</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-label">24H VOL</div>
+      <div class="stat-value" id="stat-vol">--</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-label">24H CHG</div>
+      <div class="stat-value" id="stat-change">--</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-label">LIQ</div>
+      <div class="stat-value" id="stat-liq">--</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-label">HOLDERS</div>
+      <div class="stat-value" id="stat-holders">--</div>
+    </div>
+  </div>
+
+  <!-- DEXSCREENER CHART -->
+  <div class="dexscreener-container">
+    <div id="dexscreener-embed">
+      <iframe src="https://dexscreener.com/solana/9cRCn9rGT8V2imeM2BaKs13yhMEais3ruM3rPvTGpump?embed=1&theme=dark&trades=0&info=0"></iframe>
+    </div>
+  </div>
+
+  <!-- VIBE PILLS -->
+  <div class="vibe-bar">
+    <div class="vibe-pill bullish">
+      <div class="vibe-num" id="bull-count">—</div>
+      <div>DIAMOND<br>HANDS</div>
+    </div>
+    <div class="vibe-pill degen">
+      <div class="vibe-num" id="degen-count">—</div>
+      <div>BUYING<br>MORE</div>
+    </div>
+    <div class="vibe-pill cope">
+      <div class="vibe-num" id="cope-count">—</div>
+      <div>PAPER<br>HANDS</div>
+    </div>
+  </div>
+
+  <!-- COMMUNITY VOTE -->
+  <div class="section-label">// your position //</div>
+  <div style="display:flex;gap:8px;margin-bottom:24px;">
+    <button class="quick-btn" style="flex:1;text-align:center;padding:10px 8px;" onclick="castVote('bull')">💎 Still Holding</button>
+    <button class="quick-btn" style="flex:1;text-align:center;padding:10px 8px;" onclick="castVote('degen')">🚀 Buying More</button>
+    <button class="quick-btn" style="flex:1;text-align:center;padding:10px 8px;" onclick="castVote('cope')">🧻 Paper Hands</button>
+  </div>
+
+  <!-- QUICK QUESTIONS -->
+  <div class="section-label">// ask the oracle //</div>
+  <div class="quick-grid">
+    <button class="quick-btn" onclick="quickAsk(this.dataset.q)" data-q="Wen moon? Give me a real answer based on what you know about Ansem token.">
+      <span class="q-icon">🌕</span>Wen moon?
+    </button>
+    <button class="quick-btn" onclick="quickAsk(this.dataset.q)" data-q="Is Ansem (9cRCn9rGT8V2imeM2BaKs13yhMEais3ruM3rPvTGpump) a rug pull? Give me real on-chain signal logic.">
+      <span class="q-icon">🚨</span>Is this a rug?
+    </button>
+    <button class="quick-btn" onclick="quickAsk(this.dataset.q)" data-q="Should I buy more Ansem tokens right now or wait? Give me a degen analysis.">
+      <span class="q-icon">💸</span>Should I buy more?
+    </button>
+    <button class="quick-btn" onclick="quickAsk(this.dataset.q)" data-q="What's the realistic market cap target for Ansem token if this pumps? Give me bull case, base case, cope case.">
+      <span class="q-icon">📈</span>What's the MC target?
+    </button>
+    <button class="quick-btn" onclick="quickAsk(this.dataset.q)" data-q="Who are the whales in Ansem token likely doing right now - accumulating or distributing? Give me the degen read.">
+      <span class="q-icon">🐋</span>What are whales doing?
+    </button>
+    <button class="quick-btn" onclick="quickAsk(this.dataset.q)" data-q="Am I early or late to Ansem token? Give me an honest take on where we are in the memecoin cycle.">
+      <span class="q-icon">⏱️</span>Am I early or late?
+    </button>
+  </div>
+
+  <!-- CHAT -->
+  <div class="oracle-tag"><span class="dot-live"></span> ORACLE ONLINE</div>
+  <div class="chat-box" id="chat-box">
+    <div class="msg oracle">
+      <div class="msg-label">ANSEM ORACLE</div>
+      <div class="msg-bubble">Greetings, degen. I am the Ansem Oracle — trained on pure on-chain vibes, memecoin cycles, and the collective wisdom of every ape who ever went in with max leverage.
+
+Ask me anything about Ansem token. Wen moon. Is it a rug. Should you buy more. I will tell you what the market won't.
+
+No financial advice. Only truth. 🔮</div>
+    </div>
+  </div>
+
+  <!-- INPUT -->
+  <div class="input-row">
+    <input
+      class="input-field"
+      id="user-input"
+      placeholder="Ask the Oracle anything about Ansem..."
+      autocomplete="off"
+    />
+    <button class="send-btn" id="send-btn" onclick="sendMessage()">CONSULT</button>
+  </div>
+
+  <!-- LINK BACK -->
+  <div style="text-align:center;margin-bottom:24px;">
+    <a href="pnl-card.html" style="color:var(--sol2);font-size:11px;letter-spacing:2px;text-decoration:none;border:1px solid rgba(20,241,149,0.3);padding:10px 20px;border-radius:6px;display:inline-block;transition:all 0.2s;"
+       onmouseover="this.style.background='rgba(20,241,149,0.1)'" onmouseout="this.style.background=''">
+      📊 GENERATE PNL CARD →
+    </a>
+  </div>
+
+  <!-- OFFICIAL WEBSITE -->
+  <div style="text-align:center;margin-bottom:24px;">
+    <a href="https://www.blackbullsol.com/" target="_blank" style="color:var(--text);font-size:12px;letter-spacing:1px;text-decoration:none;border-bottom:1px dashed var(--muted);padding-bottom:2px;transition:all 0.2s;"
+       onmouseover="this.style.color='var(--sol2)';this.style.borderColor='var(--sol2)'" onmouseout="this.style.color='var(--text)';this.style.borderColor='var(--muted)'">
+      🌐 OFFICIAL $ANSEM WEBSITE: WWW.BLACKBULLSOL.COM
+    </a>
+  </div>
+
+  <!-- DISCLAIMER -->
+  <div class="disclaimer">
+    <span>⚠️ NOT FINANCIAL ADVICE.</span> The Oracle is an AI and does not have access to live price data.<br>
+    DYOR. Never invest more than you can afford to lose. Memecoins are extremely high risk.
+  </div>
+
+</div>
+
+<script src="js/oracle.js"></script>
+</body>
+</html>
