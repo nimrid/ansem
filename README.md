@@ -1,7 +1,7 @@
 # ANSEM ORACLE
 
 <p align="center">
-  <img src="assets/logo.png" alt="Ansem Oracle Logo" width="200"/>
+  <img src="assets/logo.jpg" alt="Ansem Oracle Logo" width="200"/>
 </p>
 
 ## Overview
