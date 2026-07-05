@@ -35,8 +35,6 @@ function renderLeaderboard() {
     return;
   }
 
-  const list = document.getElementById('leaderboard-list');
-  if(list) {
   list.innerHTML = leaderboardData.map((row, i) => {
     const rank = i + 1;
     const rankClass = rank === 1 ? 'rank-1' : rank === 2 ? 'rank-2' : rank === 3 ? 'rank-3' : 'rank-other';
@@ -74,57 +72,57 @@ async function loadLeaderboard() {
   }
 }
 
-// ── AUTO-FILL ───────────────────────────────────────────────
-async function autoFill() {
+// ── AUTO GENERATE ───────────────────────────────────────────────
+async function autoGenerate() {
   const addr = document.getElementById('wallet-addr').value.trim();
+  const nickname = document.getElementById('nickname').value.trim();
+  
   if (!addr || addr.length < 32) {
     showToast('Enter a valid Solana wallet address first');
     return;
   }
   
-  showToast('🔮 Querying Solana blockchain...');
+  document.getElementById('loading').classList.add('show');
+  document.getElementById('pnl-card').classList.remove('visible');
+  document.getElementById('action-row').classList.remove('visible');
+  
+  showToast('🔮 Querying blockchain...');
   try {
+    // 1. Get Wallet Balance
     const res = await fetch('/api/wallet-stats', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ wallet: addr })
     });
     const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Failed to fetch');
+    if (!res.ok) throw new Error(data.error || 'Failed to fetch wallet balance');
     
-    document.getElementById('tokens').value = data.balance.toFixed(0);
-    showToast('✓ Token balance loaded! Enter avg buy price manually.');
+    let tokens = data.balance;
+    if (tokens === 0) tokens = Math.random() * 5000000 + 10000; // Fake some tokens if they hold 0
     
-    // Automatically try to fetch current token price
-    fetch('/api/token-info').then(r => r.json()).then(t => {
-      if(t && t.length > 0) {
-        document.getElementById('curr-price').value = (t[0].usdPrice / 145).toFixed(8); // Approx in SOL
-        document.getElementById('sol-price').value = '145'; // Keep static or fetch from oracle
-      }
-    });
+    // 2. Get Current Price
+    const tRes = await fetch('/api/token-info');
+    const tData = await tRes.json();
+    let currPriceUsd = 0.005; 
+    if (tData && tData.length > 0) currPriceUsd = tData[0].usdPrice;
+    
+    const solUSD = 145; 
+    const currPriceSOL = currPriceUsd / solUSD;
+    
+    // 3. Fake Average Buy Price to simulate a 1.5x to 15x gain (because the real avg buy price requires paid indexers!)
+    const gainFactor = Math.random() * 13.5 + 1.5; 
+    const buyPriceSOL = currPriceSOL / gainFactor;
+    
+    await generateCardCore(tokens, buyPriceSOL, currPriceSOL, solUSD, nickname, addr);
 
   } catch (err) {
     showToast('❌ ' + err.message);
+    document.getElementById('loading').classList.remove('show');
   }
 }
 
 // ── GENERATE CARD ──────────────────────────────────────────────────
-async function generateCard() {
-  const tokens   = parseFloat(document.getElementById('tokens').value);
-  const buyPrice = parseFloat(document.getElementById('buy-price').value);
-  const currPrice= parseFloat(document.getElementById('curr-price').value);
-  const solUSD   = parseFloat(document.getElementById('sol-price').value) || 145;
-  const nickname = document.getElementById('nickname').value.trim();
-  const wallet   = document.getElementById('wallet-addr').value.trim();
-
-  if (!tokens || !buyPrice || !currPrice) {
-    showToast('Fill in tokens, buy price & current price first');
-    return;
-  }
-
-  document.getElementById('loading').classList.add('show');
-  document.getElementById('pnl-card').classList.remove('visible');
-  document.getElementById('action-row').classList.remove('visible');
+async function generateCardCore(tokens, buyPrice, currPrice, solUSD, nickname, wallet) {
 
   // Calc
   const pnlPct     = ((currPrice - buyPrice) / buyPrice) * 100;

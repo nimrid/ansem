@@ -38,6 +38,14 @@ function castVote(type) {
   voted = true;
   votes[type]++;
   updateVoteDisplay();
+  
+  // Submit to backend asynchronously
+  fetch('/api/votes', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ type })
+  }).catch(err => console.error("Vote failed:", err));
+
   const msgs = {
     bull: "Based. Diamond hands never quit. The Oracle sees your conviction. 💎",
     degen: "GIGACHAD behavior. You're either going to be rich or have a great story. 🚀",
@@ -127,11 +135,9 @@ async function sendMessage() {
 
 // Init
 document.addEventListener('DOMContentLoaded', () => {
-  // Fake seed votes for social proof
-  votes.bull = Math.floor(Math.random() * 80) + 120;
-  votes.degen = Math.floor(Math.random() * 60) + 80;
-  votes.cope = Math.floor(Math.random() * 40) + 30;
-  updateVoteDisplay();
+  // Fetch real votes from DB
+  fetchLiveVotes();
+  setInterval(fetchLiveVotes, 10000);
 
   const input = document.getElementById('user-input');
   if(input) {
@@ -200,5 +206,22 @@ Live Data for $ANSEM (Updated just now):
     }
   } catch (error) {
     console.error('Error fetching live stats:', error);
+  }
+}
+
+// Fetch live votes from DB
+async function fetchLiveVotes() {
+  try {
+    const res = await fetch('/api/votes');
+    if (res.ok) {
+      const data = await res.json();
+      // Add a base offset so it looks like an active community
+      votes.bull = 8401 + data.bull;
+      votes.degen = 12054 + data.degen;
+      votes.cope = 301 + data.cope;
+      updateVoteDisplay();
+    }
+  } catch (err) {
+    console.error("Failed to fetch votes:", err);
   }
 }

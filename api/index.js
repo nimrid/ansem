@@ -29,6 +29,14 @@ pool.query(`
   )
 `).catch(err => console.error("Error creating table:", err));
 
+pool.query(`
+  CREATE TABLE IF NOT EXISTS oracle_votes (
+    id SERIAL PRIMARY KEY,
+    vote_type VARCHAR(20),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  )
+`).catch(err => console.error("Error creating votes table:", err));
+
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '..')));
@@ -175,6 +183,36 @@ app.get('/api/leaderboard', async (req, res) => {
   } catch (err) {
     console.error("DB Select Error:", err);
     res.status(500).json({ error: 'Failed to fetch leaderboard' });
+  }
+});
+
+// Endpoint for Oracle Votes
+app.get('/api/votes', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT vote_type, COUNT(*) as count FROM oracle_votes GROUP BY vote_type');
+    const counts = { bull: 0, degen: 0, cope: 0 };
+    result.rows.forEach(r => {
+      counts[r.vote_type] = parseInt(r.count, 10);
+    });
+    res.json(counts);
+  } catch (err) {
+    console.error("DB Votes Select Error:", err);
+    res.status(500).json({ error: 'Failed to fetch votes' });
+  }
+});
+
+app.post('/api/votes', async (req, res) => {
+  try {
+    const { type } = req.body;
+    if (['bull', 'degen', 'cope'].includes(type)) {
+      await pool.query('INSERT INTO oracle_votes (vote_type) VALUES ($1)', [type]);
+      res.json({ success: true });
+    } else {
+      res.status(400).json({ error: 'Invalid vote type' });
+    }
+  } catch (err) {
+    console.error("DB Vote Insert Error:", err);
+    res.status(500).json({ error: 'Failed to save vote' });
   }
 });
 

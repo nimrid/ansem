@@ -22,38 +22,16 @@
   <div class="section-label">// enter your stats //</div>
   <div class="connect-panel">
 
-    <div class="wallet-row">
-      <input class="wallet-input" id="wallet-addr" placeholder="Paste your wallet address (optional, for display only)..." maxlength="44" />
-      <button class="connect-btn" onclick="autoFill()">AUTO-FILL</button>
-    </div>
-
-    <div class="divider">OR ENTER MANUALLY</div>
-
-    <div class="manual-grid">
-      <div class="input-group">
-        <div class="input-label">Tokens Held</div>
-        <input class="num-input" id="tokens" type="number" placeholder="e.g. 1,000,000" min="0" />
-      </div>
-      <div class="input-group">
-        <div class="input-label">Avg Buy Price (SOL)</div>
-        <input class="num-input" id="buy-price" type="number" placeholder="e.g. 0.0000012" step="any" min="0" />
-      </div>
-      <div class="input-group">
-        <div class="input-label">Current Price (SOL)</div>
-        <input class="num-input" id="curr-price" type="number" placeholder="e.g. 0.0000048" step="any" min="0" />
-      </div>
-      <div class="input-group">
-        <div class="input-label">SOL Price (USD)</div>
-        <input class="num-input" id="sol-price" type="number" placeholder="e.g. 145" min="0" value="145" />
-      </div>
+    <div class="wallet-row" style="margin-bottom: 16px;">
+      <input class="wallet-input" id="wallet-addr" placeholder="Paste your Solana wallet address..." maxlength="44" style="flex: 1;" />
     </div>
 
     <div class="input-group" style="margin-bottom:16px;">
-      <div class="input-label">Your Degen Nickname (optional)</div>
+      <div class="input-label">YOUR DEGEN NICKNAME (OPTIONAL)</div>
       <input class="full-input" id="nickname" type="text" placeholder="e.g. sol_maxi_9000, ansem_believer..." maxlength="24" />
     </div>
 
-    <button class="gen-btn" onclick="generateCard()">⚡ GENERATE MY PnL CARD</button>
+    <button class="gen-btn" onclick="autoGenerate()">⚡ 1-CLICK MAGIC PnL GENERATOR</button>
   </div>
 
   <!-- LOADING -->
